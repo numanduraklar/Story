@@ -1,4 +1,7 @@
-name: mondoo-scan
+# Example GitHub Action to scan a Docker image
+# See https://github.com/mondoohq/actions/tree/main/docker-image for additional usage information.
+
+name: mondoo-cnspec-scan
 
 on:
   pull_request:
@@ -6,14 +9,13 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  scan:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-      - name: Scan with Mondoo
+      - name: Scan with cnspec
         uses: mondoohq/actions/docker-image@main
-        env:
-          MONDOO_CONFIG_BASE64: ${{ secrets.MONDOO_SERVICE_ACCOUNT }}
         with:
+          service-account-credentials: ${{ secrets.MONDOO_CONFIG_BASE64 }}
           image: ubuntu:22.04
